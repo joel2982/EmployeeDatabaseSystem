@@ -14,13 +14,10 @@ import com.burntassignment.ems.service.EmployeeService;
 @CrossOrigin(origins = "*")
 public class EmployeeServiceImpl implements EmployeeService{
 
-    @Autowired
+    @Autowired // object created automatically
     private EmployeeRepository employeeRepository;
 
-    // public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-    // this.employeeRepository = employeeRepository;
-    // }
-
+    //  Functions
     @Override
     public List<employee> getAllEmployees() {
         return employeeRepository.findAll();

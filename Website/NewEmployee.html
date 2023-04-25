@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Details</title>
+    <title>New Employee</title>
     <link rel="stylesheet" type="text/css" href="styleNE.css">
     </head>
 <body>
@@ -17,6 +17,7 @@
         <form id="emp_data" method="POST">
 
             <div class="user_details">
+
                 <div class="input_box">
                     <label class="important" for="emp_id">Employee ID</label>
                     <input type="number" id="emp_id" name="emp_id"
@@ -28,6 +29,7 @@
                     <input type="text" id="emp_name" name="emp_name"
                     placeholder="Enter the Full Name" required>
                 </div>
+
             </div>
 
             <div class="gender">
@@ -41,12 +43,12 @@
             </div>
 
             <div class="user_details">
+
                 <div class="input_box">
                     <label class="important" for="emp_email">Email ID</label>
                     <input type="email" id="emp_email" name="emp_email"
                     placeholder="Enter the Email ID" required>
                 </div>
-
 
                 <div class="input_box">
                     <label class="important" for="emp_phone">Phone Number</label>
@@ -103,31 +105,38 @@
             </div>
 
         </form>
+
     </div>
+
 </body>
 <script>
+    // stores the data inputted by the user in variable select
     var select = document.getElementById('emp_data');
     
+    // function invoked when user clicks the submit button
     document.getElementById("submit").onclick = function(event){
         event.preventDefault();
         var data = new FormData(select);
         var req = new XMLHttpRequest();
-        req.open("POST", "http://localhost:8080/employees",true);
-        req.setRequestHeader('Content-Type', 'application/json');
+        req.open("POST", "http://localhost:8080/employees",true);   //  POST request to send to the url mentioned
+        req.setRequestHeader('Content-Type', 'application/json');   // request data type is set to be json
+        
         req.onreadystatechange = function () {
-        if (req.readyState === 4 && req.status === 200) {
+        if (req.readyState === 4 && req.status === 200) { // response text is printed in the console if everything runs correctly
             console.log(req.responseText);
             }
-        };        
+        };
+
         var object = {};
-        data.forEach(function(value, key){
+        data.forEach(function(value, key){      // funtion to convert data to key value pairs 
             console.log(value+" "+key);
             object[key] = value;
         });
-        var json = JSON.stringify(object);
-        console.log("!!!!JSON!!!!"+json);
-        req.send(json);
-        document.getElementById("emp_data").reset();
+
+        var json = JSON.stringify(object); 
+        console.log("!!!!JSON!!!!"+json);       // just to check the json file is correctly shown
+        req.send(json);                         // transferred the file to the framework to upload it to the database
+        document.getElementById("emp_data").reset(); // clearing/resetting the existing form data
     };   
 </script>
 </html>

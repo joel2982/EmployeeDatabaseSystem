@@ -4,44 +4,61 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Employee Database</title>
+    
     <link rel="stylesheet" type="text/css" href="styleED.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 </head>
 <body style="background-color:#EAFDFC;">
     <div class="container">
         <div class="row">
+
             <h1>Employee Table</h1>
+            
             <div class="buttons">
                 <a href="NewEmployee.html"><button>New Employee</button></a>
                 <button id="myBtn">Delete Employee</button>
             </div>
+
         </div>
-            <div id="myModal" class="modal" style="align-self: center;">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2>Delete Employee Information</h2>
-                        <span class="close">&times;</span>
+
+        <!-- Pop up feature which gets enables when Delete Employee is clicked -->
+        <div id="myModal" class="modal" style="align-self: center;">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h2>Delete Employee Information</h2>
+                    <span class="close">&times;</span>
+                </div>
+    
+                <div class="modal-body">
+
+                    <div class="input_box">
+                        <label for="id">Employee ID</label>
+                        <input type="number" id="id" name="id"
+                            placeholder="Enter the Employee ID">
                     </div>
+
+                </div>
+    
+                <div class="modal-footer">
+
+                    <div>
+                        <a href="EmployeeDatabase.html">
+                            <button class="delbtn" id="del">Delete</button>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div> 
+            
+        </div>    <!-- Pop-up code end -->   
         
-                    <div class="modal-body">
-                        <div class="input_box">
-                            <label for="id">Employee ID</label>
-                            <input type="number" id="id" name="id"
-                                placeholder="Enter the Employee ID">
-                        </div>
-                    </div>
-        
-                    <div class="modal-footer">
-                        <div>
-                            <a href="EmployeeDatabase.html">
-                                <button class="delbtn" id="del">Delete</button>
-                            </a>
-                        </div>
-                    </div>
-                </div>     
-            </div>    
         <table class="table table-striped table-bordered">
             <thead class="table-light">
                 <tr style="background-color: #BFEAF5;">
@@ -65,6 +82,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
     <script>
+
+        // this code takes values/data from the below-mentioned URL and puts it in html code
         $(document).ready(function(){
             $.ajax({
                 url : "http://localhost:8080/employees",
@@ -80,18 +99,21 @@
                         x = x + "<td>"+ data[i].emp_phone + "</td>";
                         x = x + "<td>"+ data[i].emp_dob + "</td>";
                         x = x + "<td>"+ data[i].emp_doj + "</td>";
-                        if(data[i].dept==null) {
+                        
+                        if(data[i].dept==null) {    //show " " in place of null
                             data[i].dept="";
                         }
                         x = x + "<td>"+ data[i].dept + "</td>";
-                        if(data[i].desig==null) {
+
+                        if(data[i].desig==null) {   //show " " in place of null
                             data[i].desig="";
                         }
                         x = x + "<td>"+ data[i].desig + "</td>";
+
                         x = x + "<td>"+ data[i].sal + "</td>";
                         x = x + "</tr>";
-                    }
-                    document.getElementById("body").innerHTML = x;
+                    }   //x(type=text) stores the html code that will run inside the body tag
+                    document.getElementById("body").innerHTML = x; 
                 },
                 error : function(data){
                     console.log(data);
@@ -99,7 +121,7 @@
             });
         });
 
-
+    // Modal js code
         // Get the modal
         var modal = document.getElementById("myModal");
 
@@ -125,24 +147,31 @@
             modal.style.display = "none";
             }
         }
+    // end of Modal js code
         
+
+    // deletion of an employee whose id is given
+        // returns the emp_id which needs to be deleted from the database
         function getId() {
-            var val = document.getElementById('id').value;
-            console.log(val);
-            return val;
+            var id = document.getElementById('id').value;
+            console.log(id);
+            return id;
         }
         
+        // function gets invoked when the Delete Employee(id="del") gets clicked by the user
         document.getElementById("del").onclick = function(event){
             event.preventDefault();
-            x=getId();
-            console.log(x);
+            id=getId();
+            console.log(id);
             $.ajax({
-                url : "http://localhost:8080/employees/"+x,
+                //attaches id to the url which can be used by @DeleteMapping to delete the respective emp_id
+                url : "http://localhost:8080/employees/"+id,    
                 type : "DELETE",
                 success: function (result) {       
                     console.log(result);    
-                    window.location.reload();            
+                    window.location.reload();   // reloads the page if there is not error found          
                 },
+
                 error: function (e) {
                     console.log(e);
                     console.log(x);
